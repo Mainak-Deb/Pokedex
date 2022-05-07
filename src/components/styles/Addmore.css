@@ -1,0 +1,14 @@
+.btn{
+  border-radius: 40px;
+  width: 50px;
+  height: 50px;
+  color: rgb(62, 0, 101);
+  border: 2px solid white;
+  font-weight: 600;
+  font-size: 10px;
+  padding-top: 26px;
+  background-image: url('..//media/file-pokeball-png-0.png');
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover; /* Resize the background image to cover the entire container */
+}

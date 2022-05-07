@@ -1,0 +1,15 @@
+.powers {
+  padding: 5px;
+  margin: 4px;
+  border-radius: 10px;
+  background-color: aliceblue;
+  border: 1px solid black;
+}
+.pokestat h2 {
+  color: rgb(0, 51, 95);
+  border: 4px solid rgb(255, 238, 0);
+  width: auto;
+  padding: 4px;
+  margin-bottom: 15px;
+  border-radius: 40px;
+}
