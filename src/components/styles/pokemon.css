@@ -6,6 +6,20 @@
   margin: auto;
   border-radius: 40px;
 }
+.headspan{
+  color: black;
+  padding: 5px;
+  border-radius: 40px;
+  background-color: rgb(65, 163, 248);
+}
+
+.pokebutton{
+  width: 25%;
+  background-color: rgb(174, 0, 255);
+}
+.pokebutton:hover{
+  background-color: rgb(206, 102, 255);
+}
 .info-container {
   display: flex;
   flex-wrap: wrap;
@@ -36,6 +50,7 @@
 }
 .infocard img{
   height: 90%;
+  width: 90%;
  
 }
 .evolvecard{

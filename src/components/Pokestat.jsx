@@ -1,5 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./styles/Pokestat.css";
+
 const Pokestat = (props) => {
   const colors = {
     fire: ["#FDDFDF", "#de3700"],
@@ -26,13 +28,14 @@ const Pokestat = (props) => {
       <div className="pokestat">
         <h2>TYPES</h2>
         {props.infos.types.map((i) => (
+          <Link to={'/type/'+String(i)} className="pokelink">
           <span
             className="powers"
             style={{ backgroundColor: colors[i][1], color: colors[i][0] }}
           >
             {" "}
             <b>{i.toUpperCase()}</b>
-          </span>
+          </span></Link>
         ))}
       </div>
       <br />
@@ -40,12 +43,13 @@ const Pokestat = (props) => {
       <div className="pokestat">
         <h2>STRENGTH</h2>
         {props.infos.strength.map((i) => (
+          <Link to={'/type/'+String(i)} className="pokelink">
           <span
             className="powers"
             style={{ backgroundColor: colors[i][1], color: colors[i][0] }}
           >
             <b>{i.toUpperCase()}</b>
-          </span>
+          </span></Link>
         ))}
       </div>
     
@@ -53,12 +57,13 @@ const Pokestat = (props) => {
       <div className="pokestat">
         <h2>WEAKNESS</h2>
         {props.infos.weakness.map((i) => (
+           <Link to={'/type/'+String(i)} className="pokelink">
           <span
             className="powers"
             style={{ backgroundColor: colors[i][1], color: colors[i][0] }}
           >
             <b>{i.toUpperCase()}</b>
-          </span>
+          </span></Link>
         ))}
       </div>
       </>

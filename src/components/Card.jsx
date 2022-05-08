@@ -39,20 +39,24 @@ const Card = (props) => {
       return +sn;
     }
   };
-  const imgUrl=`https://assets.pokemon.com/assets/cms2/img/pokedex/full/${triNum(props.pokeid)}.png`
-  
 
-  console.log(imgUrl)
+
   const [name,setName] = useState("")
   const [type,setType] = useState("normal")
+  const [id, setid] = useState(0)
+  const [imgUrl, setimgUrl] = useState('')
+  const [typeUrl, settypeUrl] = useState('')
   let srcUrl=`/pokemon/${name}`
 
   useEffect(()=>{
     async function getData(){
       const res= await axios.get(`https://pokeapi.co/api/v2/pokemon/${props.pokeid}`);
       console.log(res.data);
+      setid(res.data.id);
+      setimgUrl(`https://assets.pokemon.com/assets/cms2/img/pokedex/full/${triNum(id)}.png`)
       setName(res.data.name)
       setType(res.data.types[0].type.name)
+      settypeUrl('/type/'+String(res.data.types[0].type.name))
       console.log(res.data.types[0].type.name)
       srcUrl=`/pokemon/${name}`
     };
@@ -69,11 +73,12 @@ const Card = (props) => {
           />
         </div>
         <div className="info">
-          <span className="number"> #{triNum(props.pokeid)} </span>
+          <span className="number"> #{triNum(id)} </span>
           <h3 className="name"> <upper> {name.toUpperCase()} </upper>  </h3>
+          <Link to={typeUrl} style={{textDecoration:'none'}}>
           <small className="type">
              <span className="coltype" style={{backgroundColor:colors[type][1]}} >  {type} </span>{" "}
-          </small>
+          </small></Link>
         </div>
       </div>
       </Link>

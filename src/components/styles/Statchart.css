@@ -1,0 +1,22 @@
+.statcon{
+    padding:0px 10px 0px 20px ;
+}
+.statspan{
+    margin-bottom: 5px;
+    color: #1f009b;
+    /* border:2px solid #f44336; */
+}
+
+.container {
+    width: 100%;
+    background-color: #ddd;
+  }
+  
+  .skills {
+    text-align: right;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: white;
+    height: 29px;
+    font-size: 15px;
+  }

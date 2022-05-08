@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import "./styles/pokemon.css";
 import axios from "axios";
 import Pokestat from "./Pokestat";
+import Statchart from "./Statchart";
 
 const Pokemon = () => {
   const colors = {
@@ -26,6 +27,7 @@ const Pokemon = () => {
     steel: ["#B2B4B5", "#696B6F"],
   };
   const { pokename } = useParams();
+
   const [basicdetail, setbasicdetail] = useState({
     name: "",
     id: "",
@@ -35,11 +37,11 @@ const Pokemon = () => {
     type: "normal",
   });
 
-  const [stats, setstats] = useState({  });
+  const [stats, setstats] = useState({});
   const [types, settypes] = useState({
     types: [],
     strength: [],
-    weakness:[]
+    weakness: [],
   });
 
   const [evolution, setevolution] = useState([]);
@@ -56,6 +58,25 @@ const Pokemon = () => {
       return +sn;
     }
   };
+  const [bothid, setbothid] = useState({
+    previd: "",
+    nextid: "",
+  });
+
+  function min(x, y) {
+    if (x < y) {
+      return x;
+    } else {
+      return y;
+    }
+  }
+  function max(x, y) {
+    if (x > y) {
+      return x;
+    } else {
+      return y;
+    }
+  }
 
   async function getId(pokename) {
     const res = await axios.get(
@@ -64,13 +85,24 @@ const Pokemon = () => {
     let id = res.data.id;
     return id;
   }
-
+  async function getName(pokeid) {
+    const res = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokeid}`);
+    let name = res.data.name;
+    return name;
+  }
   useEffect(() => {
     async function getData() {
       const res = await axios.get(
         `https://pokeapi.co/api/v2/pokemon/${pokename.toLowerCase()}`
       );
       let id = res.data.id;
+      let name=res.data.name;
+      let previd = "/pokemonid/" + String(max(1, id - 1));
+      let nextid = "/pokemonid/" + String(min(id + 1, 900));
+      setbothid({
+        previd: previd,
+        nextid: nextid,
+      });
       let svg = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${id}.svg`;
       let png = `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${triNum(
         id
@@ -83,7 +115,7 @@ const Pokemon = () => {
 
       let phrase = res2.data.flavor_text_entries[0].flavor_text;
       setbasicdetail({
-        name: pokename,
+        name: name,
         id: id,
         png: png,
         svg: svg,
@@ -107,7 +139,7 @@ const Pokemon = () => {
       for (let i = 0; i < blankev.length; i++) {
         eid.push(await getId(blankev[i]));
       }
-      console.log(eid);
+      // console.log(eid);
       let newev = [];
       for (let i = 0; i < blankev.length; i++) {
         newev.push([blankev[i], eid[i]]);
@@ -115,43 +147,42 @@ const Pokemon = () => {
       setevolution(newev);
 
       //console.log(res.data.types);
-      
-      const st=res.data.stats
-      const stdata={}
+
+      const st = res.data.stats;
+      const stdata = {};
       for (let i = 0; i < st.length; i++) {
-        stdata[st[i].stat.name]=st[i].base_stat
+        stdata[st[i].stat.name] = st[i].base_stat;
       }
-      console.log(stdata);
-      setstats(stdata)
+      // console.log(stdata);
+      setstats(stdata);
 
-
-      const tp=res.data.types
-      const tpdata=[]
+      const tp = res.data.types;
+      const tpdata = [];
       for (let i = 0; i < tp.length; i++) {
-        tpdata.push(tp[i].type.name)
+        tpdata.push(tp[i].type.name);
       }
-      console.log(tpdata);
+      // console.log(tpdata);
 
-      const dmurl=res.data.types[0].type.url
+      const dmurl = res.data.types[0].type.url;
       const dmres = await axios.get(dmurl);
-      const dm=dmres.data.damage_relations
-      const dmdata=[]
+      const dm = dmres.data.damage_relations;
+      const dmdata = [];
       for (let i = 0; i < dm.double_damage_from.length; i++) {
-        dmdata.push(dm.double_damage_from[i].name)
+        dmdata.push(dm.double_damage_from[i].name);
       }
-      console.log("dmdata",dmdata);
+      // console.log("dmdata", dmdata);
 
-      const strengthdata=[]
+      const strengthdata = [];
       for (let i = 0; i < dm.double_damage_to.length; i++) {
-        strengthdata.push(dm.double_damage_to[i].name)
+        strengthdata.push(dm.double_damage_to[i].name);
       }
-      console.log(strengthdata);
+      // console.log(strengthdata);
       settypes({
         types: tpdata,
         strength: strengthdata,
-        weakness:dmdata
-      })
-      console.log(types)
+        weakness: dmdata,
+      });
+      // console.log(types);
     }
     getData();
   });
@@ -159,8 +190,17 @@ const Pokemon = () => {
     <>
       <br />
       <hr />
-      <h1 className="head">{pokename.toUpperCase()}</h1>
-
+      <h1 className="head">
+        <span className="headspan">#{basicdetail.id}</span>{" "}
+        {basicdetail.name.toUpperCase()}{" "}
+        <span className="headspan">#{basicdetail.id}</span>{" "}
+      </h1>
+      <div>
+            <Link to={bothid.previd}><button className="pokebutton" style={{borderRadius:'20px 0px 0px 20px'}}>Previous</button></Link>
+            
+            <Link to={bothid.nextid}><button className="pokebutton"style={{borderRadius:'0px 20px 20px 0px'}}>Next</button></Link>
+            
+          </div>
       <div className="infomain">
         <div className="info-container">
           <div className="ftext">
@@ -182,9 +222,14 @@ const Pokemon = () => {
             className="infocard"
             style={{ backgroundColor: colors[basicdetail.type][0] }}
           >
-            <Pokestat infos={types}  />
+            <Pokestat infos={types} />
           </div>
-          
+          <div
+            className="infocard"
+            style={{ backgroundColor: colors[basicdetail.type][0] }}
+          >
+            <Statchart stat={stats} />
+          </div>
         </div>
         <div className="info-container">
           {evolution.map((i) => {
@@ -198,7 +243,7 @@ const Pokemon = () => {
                   className="evolvecard"
                   style={{ backgroundColor: colors[basicdetail.type][0] }}
                 >
-                  <Link to={refUrl}  style={{textDecoration:'none'}}>
+                  <Link to={refUrl} style={{ textDecoration: "none" }}>
                     <h2>{i[0].toUpperCase()}</h2>
                     <img src={imgUrl} alt={i[0]} />
                   </Link>
