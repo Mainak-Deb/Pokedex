@@ -25,6 +25,7 @@ const App = () => {
       </div>
         <Routes>
           <Route exact path="/" element={<Home/>} />
+          <Route exact path="/Pokedex" element={<Home/>} />
           <Route path="/home" element={<Home/>} />
           <Route path="/type" element={<Type/>} >
             <Route path=":typename" element={<Type/>} />
