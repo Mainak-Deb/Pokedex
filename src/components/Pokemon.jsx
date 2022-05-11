@@ -185,7 +185,7 @@ const Pokemon = () => {
       // console.log(types);
     }
     getData();
-  });
+  },[pokename]);
   return (
     <>
       <br />

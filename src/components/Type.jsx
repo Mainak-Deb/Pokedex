@@ -25,7 +25,8 @@ const Type = () => {
             setpokemons(pokearr)
         }
         getData();
-      }
+      },
+      [typename]
   )
   return (
     <>

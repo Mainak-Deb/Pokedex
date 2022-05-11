@@ -186,7 +186,7 @@ const Idpokemon = () => {
           console.log(types)
         }
         getData();
-      });
+      },[pokeid]);
       return (
         <>
           <br />
